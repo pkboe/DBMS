@@ -1,0 +1,101 @@
+/*
+Assignment no: A3
+PROBLEM STATMENT
+Design at least 10 SQL queries for suitable database application using SQL DML
+statements:Insert,Select,Update,Delete with operators, functions, and set operator.
+
+
+*/
+
+
+mysql>  create table student(Roll_no int primary key,Name varchar(20),Branch varchar(15),Marks int);
+Query OK, 0 rows affected (0.47 sec)
+
+mysql> insert into student values (1,'Ravi','Comp',90);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into student values (2,'Vedika','Comp',60);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into student values (3,'Aarush','IT',95);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into student values (4,'Jyoti','IT',70);
+Query OK, 1 row affected (0.07 sec)
+
+
+mysql> select * from student;
+
+
+
+mysql> select Roll_no,Name,Marks from student  where Marks > 70;
+
+
+mysql> select Roll_no,Name,Marks from student  where Marks < 70;
+
+
+mysql> select Roll_no,Name,Marks from student  where Marks = 70 and Name='Vedika';
+
+
+mysql> update student
+    -> set Name='Sachin'
+    -> where Name='Ravi'
+    -> ;
+
+
+mysql> select * from student;
+
+
+mysql> delete from student 
+    -> where Name='Aarush';
+
+
+mysql> select * from student;
+
+
+mysql> select max(Marks) as Max_mrks 
+    -> from student;
+
+
+mysql> select max(Marks) as Max_mrks  from student where Branch='Comp';
+
+
+mysql> select min(Marks) as Min_mrks  from student where Branch='Comp';
+
+
+
+
+mysql> select max(Marks) as Max_mrks  from student where Branch='IT';
+
+
+
+mysql> select sum(Marks) as sum_mrks  from student where Branch='Comp';
+
+
+mysql> select sum(Marks) as sum_mrks  from student where Branch='IT';
+
+
+mysql> select avg(Marks) as avg_mrks  from student where Branch='IT';
+
+
+mysql> select avg(Marks) as avg_mrks  from student where Branch='Comp';
+
+mysql> select count(Marks) as Count  from student where Branch='Comp';
+
+
+mysql> select count(Marks) as Count  from student where Branch='IT';
+
+
+mysql> select min(Marks) as Min_mrks  from student where Branch='IT';
+
+
+Select Branchcode,count(Branchcode) as bcount from studinfo group by Branchcode;
++------------+--------+
+| Branchcode | bcount |
++------------+--------+
+|          1 |      3 |
+|          2 |      2 |
+|          3 |      2 |
++------------+--------+
+3 rows in set (0.00 sec)
+

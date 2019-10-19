@@ -1,0 +1,83 @@
+/*
+Assignment no: A8
+Database Trigger (All Types: Row level and Statement level triggers, Before and After
+Triggers). Write a database trigger on Library table. The System should keep track of the
+records that are being updated or deleted. The old value of updated or deleted records should
+be added in Library_Audit table.
+
+
+*/
+
+//Code For Trigger after update
+
+
+drop trigger if exists Make_audit;
+delimiter //
+CREATE TRIGGER Make_audit
+  AFTER UPDATE ON lib_book
+  FOR EACH ROW
+BEGIN
+  INSERT INTO lib_Audit (bid, bname, qty)
+  VALUES (OLD.bid, OLD.bname,OLD.qty);
+END;
+//
+
+delimiter ;
+
+
+
+//Code For Trigger after delete
+
+
+drop trigger if exists Make_audit1;
+delimiter //
+CREATE TRIGGER Make_audit1
+  AFTER DELETE ON lib_book
+  FOR EACH ROW
+BEGIN
+  INSERT INTO lib_Audit (bid, bname, qty)
+  VALUES (OLD.bid, OLD.bname,OLD.qty);
+END;
+//
+
+delimiter ;
+
+
+
+create table lib_Audit(bid int(5),bname VARCHAR(40),qty int(5));
+
+create table lib_book(bid int(5),bname VARCHAR(40),qty int(5));
+ 
+insert into lib_book values(1,'C++',150);
+ 
+select * from lib_book;
+ 
+insert into lib_book values(2,'DBMS',100);
+ 
+select * from lib_book;
+ 
+source pr8_1.sql;
+ 
+update lib_book set qty=80 where bid=2;
+ 
+select * from lib_book;
+ 
+select * from lib_Audit;
+ 
+source pr8_2.sql;
+
+
+
+ select * from lib_Audit;
+
+ select * from lib_book;
+
+
+ delete from lib_book where bid=1;
+
+ select * from lib_book;
+
+
+ select * from lib_Audit;
+
+

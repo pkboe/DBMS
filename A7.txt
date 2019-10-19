@@ -1,0 +1,93 @@
+/*
+Assignment no: A7
+PL/SQL Stored Procedure and Stored Function.
+Write a Stored Procedure namely proc_Grade for the categorization of student. If marks scored by students in examination is <=1500 and marks>=990 then student will be placed in distinction category if marks scored are between 989 and900 category is first class, if marks 899 and 825 category is Higher Second Class.Write a PL/SQL block for using procedure created with above requirement.
+Stud_Marks(Roll,Name,Marks)
+Result(Roll,Name,Grade)
+
+
+
+*/
+
+//Code for Cursor:
+
+drop procedure if exists p_grade;
+
+    delimiter //
+    create procedure p_grade()
+    begin
+
+	DECLARE done INT DEFAULT FALSE;
+
+        declare s_marks int;
+        declare s_rollno int;
+        declare s_name varchar(30);
+        declare s_class varchar(80);
+        declare s_student cursor For Select  rollno, name, marks from stud_marks;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+         open s_student;
+	
+	 read_loop: LOOP
+        	  fetch s_student  into s_rollno,s_name,s_marks;
+
+	IF done THEN
+	      LEAVE read_loop;
+	END IF;
+
+         if(s_marks<=1500 and s_marks>=990) then
+	         set s_class='Distinction';
+
+        elseif(s_marks<=989 and s_marks>=900) then
+        	 set s_class='First Class';
+        
+        elseif (s_marks<=899 and s_marks>=825) then
+            set s_class='Higher Second Class';
+
+	else
+	 set s_class='Pass';
+
+	end if;
+	 insert into result(rollno,name,class)values(s_rollno,s_name,s_class);
+
+  END LOOP;
+         close s_student;
+         end;
+//
+
+delimiter ;
+
+  create table stud_marks(rollno int, name varchar(20), marks int);
+Query OK, 0 rows affected (0.30 sec)
+
+  create table result(rollno int, name varchar(20),class varchar(20));
+Query OK, 0 rows affected (0.31 sec)
+
+  insert into stud_marks values(1,'kalpesh',1200);
+Query OK, 1 row affected (0.05 sec)
+
+  insert into stud_marks values(2,'ariza',980);
+Query OK, 1 row affected (0.04 sec)
+
+  insert into stud_marks values(3,'ajinkya',890);
+Query OK, 1 row affected (0.05 sec)
+
+  insert into stud_marks values(4,'abc',800);
+Query OK, 1 row affected (0.05 sec)
+
+  select * from stud_marks;
+
+  select * from result;
+Empty set (0.00 sec)
+
+  source curs.sql;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+  call p_grade();
+Query OK, 0 rows affected (0.25 sec)
+
+  select * from result;
+
+

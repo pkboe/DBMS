@@ -1,0 +1,84 @@
+/*
+Assignment no: B3
+PROBLEM STATEMENT
+Implement aggregation and indexing with suitable example using MongoDB.
+
+
+*/
+
+ // AGGREGATION
+
+> db.student.insert([{"Roll No":1,"Name":"Sana","Branch":"Computer","Marks":80}])
+
+
+> db.student.insert([{"Roll No":2,"Name":"Gauri","Branch":"Computer","Marks":85}])
+
+
+> db.student.insert([{"Roll No":3,"Name":"Shweta","Branch":"Civil","Marks":75}])
+
+
+
+> db.student.insert([{"Roll No":4,"Name":"Radha","Branch":"Electrical","Marks":60}])
+
+
+> db.student.find().pretty()
+
+//1) Sum()
+
+> db.student.aggregate([{$group:{_id:"$Branch",Sum:{$sum:"$Marks"}}}])
+
+//2)Avg() 
+
+> db.student.aggregate([{$group:{_id:"$Branch",Avg:{$avg:"$Marks"}}}])
+
+//3) Min() 
+
+> db.student.aggregate([{$group:{_id:"$Branch",Min:{$min:"$Marks"}}}])
+
+
+//4) Max() 
+
+> db.student.aggregate([{$group:{_id:"$Branch",Max:{$max:"$Marks"}}}])
+
+//5)Push()
+> db.student.aggregate([{$group:{_id:"$Branch",PUSH:{$push:"$Marks"}}}])
+
+
+//6)AddToSet()
+> db.student.aggregate([{$group:{_id:"$Branch",addtoset:{$addToSet:"$Marks"}}}])
+
+
+
+//7)first()
+> db.student.aggregate([{$group:{_id:"$Branch",First:{$first:"$Marks"}}}])
+
+
+//8)last()
+
+> db.student.aggregate([{$group:{_id:"$Branch",Last:{$last:"$Marks"}}}])
+
+
+
+ // INDEXING
+
+
+
+> db.student.ensureIndex({"Roll No":1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.student.getIndexes()
+
+//  CREATE INDEX
+
+> db.student.createIndex({"Roll No":2})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 2,
+	"numIndexesAfter" : 3,
+	"ok" : 1
+}
+ 

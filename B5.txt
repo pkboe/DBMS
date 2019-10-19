@@ -1,0 +1,55 @@
+﻿/*
+Assignment no: B5
+Problem Statement :Implement any 5 Queries using MongoDB.
+
+
+*/
+> use GESCOE
+switched to db GESCOE
+
+> db.createCollection("student")
+{ "ok" : 1 }
+
+> db.student.insert({Rollno:1,Name:'Shreya',Address:'Nashik',Marks:85})
+
+
+> db.student.insert({Rollno:2,Name:'Aditi',Address:'Munbai',Marks:90})
+
+
+> db.student.insert({Rollno:3,Name:'Dipika',Address:'Pune',Marks:95})
+
+
+> db.student.insert({Rollno:4,Name:'ABC',Address:'Pune',Marks:75})
+
+
+> db.student.insert({Rollno:5,Name:'PQR',Address:'Nashik',Marks:70})
+
+
+> db.student.update({'Address':'Munbai'},{$set:{'Address':'Mumbai'})
+
+> db.student.find().pretty()
+
+
+> db.student.update({'Addres':'Munbai'},{$set:{'Address':'Mumbai'}})
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+
+> db.student.find().pretty()
+
+> db.student.update({'Addres':'Munbai'},{$set:{'Address':'Mumbai'}},{mlti:true})
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+
+> db.student.find().pretty()
+
+> db.student.find({"Marks":{$gt:90}}).pretty()
+
+> db.student.find({$and:[{Rollno:1},{Name:'Shreya'}]}).pretty()
+
+
+
+> db.student.save({Rollno:5,Name:'PQR',Address:'Nashik',Marks:70})
+WriteResult({ "nInserted" : 1 })
+
+> db.student.find().pretty()
+
+
+

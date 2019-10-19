@@ -1,0 +1,42 @@
+/*
+Assignment no: B4
+PROBLEM STATEMENT
+Implement Map reduces operation with suitable example using MongoDB.
+
+
+
+*/
+
+
+> db.createCollection("stud_data")
+
+> db.stud_data.insert([{'RollNo':1,'Name':'Suchita','Div':'A','Marks':90},{'RollNo':2,'Name':'Rohit','Div':'B''marks':84},{'RollNo':4,'Name':'Amit','Div':'B'},{'RollNo':6,'Name':'Ruchi','Div':'A''Marks':95}])
+
+> db.stud_data.insert({'RollNo':8,'Name':'Madhav','Div':'A''Marks':90})
+
+> db.stud_data.find().pretty()
+
+//1.show only names uasing map-reduce fun 
+
+> db.stud.mapReduce(function(){emit(this.Name,1)},function(key,values) {return Array.sum(values)},{out:'Name_Total'}).find() 
+
+/2.show names and marks using map-reduce fun 
+
+db.stud.mapReduce(function(){emit(this.Name,this.Marks)},function(key,values) {return Array.sum(values)},{out:'Name_Total'}).find() 
+
+
+//3.with sort show names and marks using map-reduce fun 
+
+>db.stud.mapReduce(function(){emit(this.Name,this.Marks)},function(key,values) {return Array.sum(values)},{out:'Name_Total'}).find().sort({value:1}) 
+
+>db.stud.mapReduce(function(){emit(this.Name,this.Marks)},function(key,values) {return Array.sum(values)},{query:{Marks:{$gt:95}},out:'Name_Total'}).find() 
+
+
+> db.stud.mapReduce(function(){emit(this.Name,1)},function(key,values) {return Array.sum(values)},{query:{Marks:{$gt:95}},out:'Name_Total'}).find()
+
+
+//use limit 
+db.stud.mapReduce(function(){emit(this.Name,1)},function(key,values) {return Array.sum(values)},{query:{Marks:{$gt:95}},out:'Name_Total'}).find().limit(1)
+{ "_id" : "Rohit", "value" : 1 }  
+
+

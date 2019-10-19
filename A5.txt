@@ -1,0 +1,155 @@
+/*			Assignment No A5
+Unnamed PL/SQL code block: Use of Control structure and Exception handling is mandatory.
+Write a PL/SQL block of code for the following requirements:-
+Schema:
+1. Borrower(Rollin, Name, DateofIssue, NameofBook, Status)
+2. Fine(Roll_no,Date,Amt)
+Accept roll_no & name of book from user.Check the number of days (from date of issue), if days are between 15 to 30 then fine
+amount will be Rs 5per day.If no. of days>30, per day fine will be Rs 50 per day & for days less than 30, Rs. 5 per
+day.After submitting the book, status will change from I to R. If condition of fine is true, then details will be stored into
+fine table.Frame the problem statement for writing PL/SQL block inline with above statement.
+
+
+
+*/
+
+
+DROP PROCEDURE IF EXISTS p1;
+delimiter //
+create procedure p1(IN rno int, IN bname varchar(20))
+begin 
+	declare d1 date;
+	declare daycnt int;
+	declare fine_amt int;
+
+
+	select DOI into d1 from borrower where rollno = rno and  bookname = bname;
+
+	select DATEDIFF(now(),d1) into daycnt;
+
+	if (daycnt > 15 and daycnt < 30) then 
+		set fine_amt = daycnt * 5;		
+		insert into fine(rollno,date_of_fine,amount) values (rno,now(),fine_amt);	
+		update borrower set status = 'R' where rollno = rno;
+	elseif (daycnt > 30) then 
+		set fine_amt = daycnt * 50; 			
+		insert into fine(rollno,date_of_fine,amount) values (rno,now(),fine_amt);	
+		update borrower set status = 'R' where rollno = rno;
+	else 
+		update borrower set status = 'R' where rollno = rno;
+	end if;			
+end;
+//
+delimiter ;
+
+
+
+
+Database changed
+mysql> create table borrower(rollno int primary key,name varchar(20), DOI date,bookname varchar(50),status varchar(4));
+
+
+mysql> insert into borrower values(1,'amit','2018-08-14','dbms','I'),(2,'neha','2018-09-02','toc','I'), (3,'yash','2018-07-31','cn','I');
+
+mysql> select * from borrower;
+
+
+mysql> create table fine(rollno int, date_of_fine date, amount varchar(10));
+
+
+mysql> select * from fine;
+Empty set (0.00 sec)
+
+mysql> source pr5.sql;
+
+
+
+mysql> call p1(1,'dbms');
+
+
+mysql> select * from borrower;
+
+
+mysql> select * from fine;
+
+
+mysql> call p1(2,'toc');
+
+mysql> select * from borrower;
+
+
+mysql> select * from fine;
+
+mysql> call p1(3,'cn');
+
+
+mysql> select * from borrower;
+
+
+mysql> select * from fine;
+
+mysql> select * from borrower;
+
+
+mysql> update borrower set status='I' where rollno=1;
+
+
+mysql> select * from borrower;
+
+
+mysql> update borrower set status='I' where rollno=1;
+
+
+mysql> update borrower set status='I' where rollno=2;
+
+
+mysql> update borrower set status='I' where rollno=3;
+
+mysql> select * from borrower;
+
+
+mysql> delete from fine;
+
+
+mysql> select * from fine;
+Empty set (0.00 sec)
+
+mysql> source pr5.sql;
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call p1(1,'toc');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from fine;
+Empty set (0.00 sec)
+
+mysql> select * from borrower;
++--------+------+------------+----------+--------+
+| rollno | name | DOI        | bookname | status |
++--------+------+------------+----------+--------+
+|      1 | amit | 2018-08-14 | dbms     | R      |
+|      2 | neha | 2018-09-02 | toc      | I      |
+|      3 | yash | 2018-07-31 | cn       | I      |
++--------+------+------------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> call p1(3,'dbms');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from borrower;
++--------+------+------------+----------+--------+
+| rollno | name | DOI        | bookname | status |
++--------+------+------------+----------+--------+
+|      1 | amit | 2018-08-14 | dbms     | R      |
+|      2 | neha | 2018-09-02 | toc      | I      |
+|      3 | yash | 2018-07-31 | cn       | R      |
++--------+------+------------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from fine;
+Empty set (0.00 sec)
+
+mysql> 
+*/

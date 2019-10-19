@@ -1,0 +1,186 @@
+/*PROBLEM STATEMENT
+Design and Develop MongoDB Queries using CRUD operations. (Use CRUD operations,
+SAVE method, logical operators).
+
+
+*/
+
+//1. Create db and collection
+
+use GESCOE 
+switched to db GESCOE
+
+> db.createCollection("mycol") 
+{ "ok" : 1 } 
+
+> db.mycol.insert({"name":"gauri"}) 
+WriteResult({ "nInserted" : 1 }) 
+
+//2.Insert Document 
+
+
+> db.mycol.insert({"name":"gauri","roll no":30,"branch":"computer"})
+WriteResult({ "nInserted" : 1 })
+> db.mycol.insert({"name":"sana","roll no":46,"branch":"civil"})
+WriteResult({ "nInserted" : 1 })
+> db.mycol.insert({"name":"shweta","roll no":50,"branch":"computer"})
+WriteResult({ "nInserted" : 1 })
+> db.mycol.insert({"name":"shraddha","roll no":23,"branch":"mechanical"})
+WriteResult({ "nInserted" : 1 })
+
+{ "_id" : ObjectId("59d72e05ac848048a7fb4e6c"), "name" : "gauri" }
+{
+	"_id" : ObjectId("59d72e38ac848048a7fb4e6d"),
+	"name" : "gauri",
+	"roll no" : 30,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e4dac848048a7fb4e6e"),
+	"name" : "sana",
+	"roll no" : 46,
+	"branch" : "civil"
+}
+{
+	"_id" : ObjectId("59d72e5aac848048a7fb4e6f"),
+	"name" : "shweta",
+	"roll no" : 50,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e6aac848048a7fb4e70"),
+	"name" : "shraddha",
+	"roll no" : 23,
+	"branch" : "mechanical"
+}
+
+
+//3.Update-: 
+
+> db.mycol.update({"name":"gauri"},{$set:{"name":"reema"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.mycol.find().pretty()
+{ "_id" : ObjectId("59d72e05ac848048a7fb4e6c"), "name" : "reema" }
+{
+	"_id" : ObjectId("59d72e38ac848048a7fb4e6d"),
+	"name" : "gauri",
+	"roll no" : 30,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e4dac848048a7fb4e6e"),
+	"name" : "sana",
+	"roll no" : 46,
+	"branch" : "civil"
+}
+{
+	"_id" : ObjectId("59d72e5aac848048a7fb4e6f"),
+	"name" : "shweta",
+	"roll no" : 50,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e6aac848048a7fb4e70"),
+	"name" : "shraddha",
+	"roll no" : 23,
+	"branch" : "mechanical"
+}
+
+
+//4.DELETE: 
+
+//a)remove 
+
+ db.mycol.remove({"name":"reema"})
+WriteResult({ "nRemoved" : 1 })
+> db.mycol.find().pretty()
+{
+	"_id" : ObjectId("59d72e38ac848048a7fb4e6d"),
+	"name" : "gauri",
+	"roll no" : 30,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e4dac848048a7fb4e6e"),
+	"name" : "sana",
+	"roll no" : 46,
+	"branch" : "civil"
+}
+{
+	"_id" : ObjectId("59d72e5aac848048a7fb4e6f"),
+	"name" : "shweta",
+	"roll no" : 50,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e6aac848048a7fb4e70"),
+	"name" : "shraddha",
+	"roll no" : 23,
+	"branch" : "mechanical"
+}
+
+
+//5) SAVE Method()
+
+> db.mycol.save({"name":"Amruta","roll no":56,"branch":"civil"})
+WriteResult({ "nInserted" : 1 })
+
+> db.mycol.find().pretty()
+{
+	"_id" : ObjectId("59d72e38ac848048a7fb4e6d"),
+	"name" : "gauri",
+	"roll no" : 30,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e4dac848048a7fb4e6e"),
+	"name" : "sana",
+	"roll no" : 46,
+	"branch" : "civil"
+}
+{
+	"_id" : ObjectId("59d72e5aac848048a7fb4e6f"),
+	"name" : "shweta",
+	"roll no" : 50,
+	"branch" : "computer"
+}
+{
+	"_id" : ObjectId("59d72e6aac848048a7fb4e70"),
+	"name" : "shraddha",
+	"roll no" : 23,
+	"branch" : "mechanical"
+}
+{
+	"_id" : ObjectId("59d72fbaac848048a7fb4e71"),
+	"name" : "Amruta",
+	"roll no" : 56,
+	"branch" : "civil"
+}
+
+//6)AND in MongoDB 
+
+> db.mycol.find({$and:[{"name":"Amruta"},{"branch":"civil"}]}).pretty()
+{
+	"_id" : ObjectId("59d72fbaac848048a7fb4e71"),
+	"name" : "Amruta",
+	"roll no" : 56,
+	"branch" : "civil"
+}
+
+//7)OR in MongoDB 
+
+> db.mycol.find({$or:[{"name":"Amruta"},{"branch":"civil"}]}).pretty()
+{
+	"_id" : ObjectId("59d72e4dac848048a7fb4e6e"),
+	"name" : "sana",
+	"roll no" : 46,
+	"branch" : "civil"
+}
+{
+	"_id" : ObjectId("59d72fbaac848048a7fb4e71"),
+	"name" : "Amruta",
+	"roll no" : 56,
+	"branch" : "civil"
+}
+

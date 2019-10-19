@@ -1,0 +1,213 @@
+/*
+Assignment no: A4
+Design at least 10 SQL queries for suitable database application using SQL DML statements:
+all types of Join, Sub-Query and View.
+
+
+*/
+
+//JOINS
+
+mysql> use GESCOE
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+mysql> show tables;
++------------------+
+| Tables_in_GESCOE |
++------------------+
+| CarInfo          |
+| CarType          |
+| Staff            |
+| Student          |
+| Studinfo         |
++------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Studinfo;
++--------+---------+------+-------+
+| Rollno | Name    | Age  | Marks |
++--------+---------+------+-------+
+|      1 | Saurabh |   19 | 80.00 |
+|      2 | Shyam   |   19 | 95.00 |
+|      3 | Renuka  |   18 | 85.00 |
+|      4 | Mansi   |   19 | 89.00 |
+|      5 | Saurabh |   19 | 80.00 |
+|      6 | NULL    |   17 |  NULL |
++--------+---------+------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Student;
++--------+----------+-----------+
+| Rollno | Name     | Depatment | 
++--------+----------+-----------+
+|      1 | GESCOE   | Comp      | 
+|      2 | Mansi    | Civil     | 
+|      3 | Shrutika | Comp      |   
+|      4 | Amey     | Civil     |   
+|      5 | Shyam    | Comp      |    
+|     10 | Shyam    | Comp      |     
++--------+----------+-----------+
+
+mysql> desc Student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Rollno    | int(11)     | YES  |     | NULL    |       |
+| Name      | varchar(20) | YES  |     | NULL    |       |
+| Depatment | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc Studinfo;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| Rollno | int(11)      | NO   | PRI | NULL    | auto_increment |
+| Name   | varchar(20)  | YES  |     | NULL    |                |
+| Age    | int(11)      | YES  |     | NULL    |                |
+| Marks  | decimal(4,2) | YES  |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Student
+    -> inner join Studinfo on Student.Rollno=Studinfo.Rollno;
++--------+----------+-----------+--------+---------+------+-------+
+| Rollno | Name     | Depatment | Rollno | Name    | Age  | Marks |
++--------+----------+-----------+--------+---------+------+-------+
+|      1 | GESCOE   | Comp      |      1 | Saurabh |   19 | 80.00 |
+|      2 | Mansi    | Civil     |      2 | Shyam   |   19 | 95.00 |
+|      3 | Shrutika | Comp      |      3 | Renuka  |   18 | 85.00 |
+|      4 | Amey     | Civil     |      4 | Mansi   |   19 | 89.00 |
++--------+----------+-----------+--------+---------+------+-------+
+4 rows in set (0.02 sec)
+
+mysql> select Student.Rollno,Student.Name,Studinfo.Name from Student inner join Studinfo on Student.Rolln
++--------+----------+---------+
+| Rollno | Name     | Name    |
++--------+----------+---------+
+|      1 | GESCOE   | Saurabh |
+|      2 | Mansi    | Shyam   |
+|      3 | Shrutika | Renuka  |
+|      4 | Amey     | Mansi   |
++--------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> 
+
+//Left Join
+mysql> insert into Student values(10,'Shyam','Comp');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Student left join Studinfo on Student.Rollno=Studinfo.Rollno;
++--------+----------+-----------+--------+---------+------+-------+
+| Rollno | Name     | Depatment | Rollno | Name    | Age  | Marks |
++--------+----------+-----------+--------+---------+------+-------+
+|      1 | GESCOE   | Comp      |      1 | Saurabh |   19 | 80.00 |
+|      2 | Mansi    | Civil     |      2 | Shyam   |   19 | 95.00 |
+|      3 | Shrutika | Comp      |      3 | Renuka  |   18 | 85.00 |
+|      4 | Amey     | Civil     |      4 | Mansi   |   19 | 89.00 |
+|      5 | Shyam    | Comp      |      5 | Saurabh |   19 | 80.00 |
+|     10 | Shyam    | Comp      |   NULL | NULL    | NULL |  NULL |
++--------+----------+-----------+--------+---------+------+-------+
+6 rows in set (0.00 sec)
+
+mysql> 
+
+//Right Join
+mysql> select * from Student right join Studinfo on Student.Rollno=Studinfo.Rollno;
++--------+----------+-----------+--------+---------+------+-------+
+| Rollno | Name     | Depatment | Rollno | Name    | Age  | Marks |
++--------+----------+-----------+--------+---------+------+-------+
+|      1 | GESCOE   | Comp      |      1 | Saurabh |   19 | 80.00 |
+|      2 | Mansi    | Civil     |      2 | Shyam   |   19 | 95.00 |
+|      3 | Shrutika | Comp      |      3 | Renuka  |   18 | 85.00 |
+|      4 | Amey     | Civil     |      4 | Mansi   |   19 | 89.00 |
+|      5 | Shyam    | Comp      |      5 | Saurabh |   19 | 80.00 |
+|   NULL | NULL     | NULL      |      6 | NULL    |   17 |  NULL |
++--------+----------+-----------+--------+---------+------+-------+
+6 rows in set (0.00 sec)
+
+//Self Join
+mysql> select * from Student A,Student B
+    -> where A.Rollno=B.Rollno;
++--------+----------+-----------+--------+----------+-----------+
+| Rollno | Name     | Depatment | Rollno | Name     | Depatment |
++--------+----------+-----------+--------+----------+-----------+
+|      1 | GESCOE   | Comp      |      1 | GESCOE   | Comp      |
+|      2 | Mansi    | Civil     |      2 | Mansi    | Civil     |
+|      3 | Shrutika | Comp      |      3 | Shrutika | Comp      |
+|      4 | Amey     | Civil     |      4 | Amey     | Civil     |
+|      5 | Shyam    | Comp      |      5 | Shyam    | Comp      |
+|     10 | Shyam    | Comp      |     10 | Shyam    | Comp      |
++--------+----------+-----------+--------+----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> 
+
+
+
+
+//SUB-QUERIES 
+
+mysql>  select * from Studinfo where Name in(select Name from Studinfo where Marks > 80);
++--------+--------+------+-------+
+| Rollno | Name   | Age  | Marks |
++--------+--------+------+-------+
+|      2 | Shyam  |   19 | 95.00 |
+|      3 | Renuka |   18 | 85.00 |
+|      4 | Mansi  |   19 | 89.00 |
++--------+--------+------+-------+
+3 rows in set (0.00 sec)
+
+
+mysql>  select * from Studinfo where Marks > (select avg(Marks) from Studinfo); 
++--------+-------+------+-------+
+| Rollno | Name  | Age  | Marks |
++--------+-------+------+-------+
+|      2 | Shyam |   19 | 95.00 |
+|      4 | Mansi |   19 | 89.00 |
++--------+-------+------+-------+
+2 rows in set (0.00 sec)
+
+
+//Creating View....
+mysql> create view Studview as
+    -> select Rollno,Name,Marks
+    -> from Studinfo
+    -> where Age=19;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from Studinfo;
++--------+---------+------+-------+
+| Rollno | Name    | Age  | Marks |
++--------+---------+------+-------+
+|      1 | Saurabh |   19 | 80.00 |
+|      2 | Shyam   |   19 | 95.00 |
+|      3 | Renuka  |   18 | 85.00 |
+|      4 | Mansi   |   19 | 89.00 |
+|      5 | Saurabh |   19 | 80.00 |
+|      6 | NULL    |   17 |  NULL |
++--------+---------+------+-------+
+6 rows in set (0.00 sec)
+
+//Display Contains of View
+
+mysql> select * from Studview;
++--------+---------+-------+
+| Rollno | Name    | Marks |
++--------+---------+-------+
+|      1 | Saurabh | 80.00 |
+|      2 | Shyam   | 95.00 |
+|      4 | Mansi   | 89.00 |
+|      5 | Saurabh | 80.00 |
++--------+---------+-------+
+4 rows in set (0.01 sec)
+
+//Drop View
+mysql> drop view Studview;
+Query OK, 0 rows affected (0.27 sec)
+
+

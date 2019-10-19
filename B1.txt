@@ -1,0 +1,47 @@
+/*
+Assignment no: B1
+PROBLEM STATEMENT
+Study of Open Source NOSQL Database: MongoDB (Installation, Basic CRUD operations,
+Execution).
+
+
+*/
+
+
+
+> db.stud_data.insert([{'RollNo':5,'Name':'Sima','Div':'A','Marks':96},{'RollNo':8,'Name':'Ronit','marks':75},{'RollNo':9,'Name':'Ajit','Div':'B','Marks':87}])
+
+> db.stud_data.find().pretty()
+
+> db.stud_data.update({'Div':'A'},{$set:{'Div':'B'}},{multi:true})
+
+> db.stud_data.find().pretty()
+
+
+> db.stud_data.find().sort(({'Name':1})).pretty()
+
+
+//4.DELETE: 
+
+//a)remove 
+
+ db.mycol.remove({"name":"reema"})
+WriteResult({ "nRemoved" : 1 })
+> db.mycol.find().pretty()
+
+
+//5) SAVE Method()
+
+> db.mycol.save({"name":"Amruta","roll no":56,"branch":"civil"})
+WriteResult({ "nInserted" : 1 })
+
+> db.mycol.find().pretty()
+
+//6)AND in MongoDB 
+
+> db.mycol.find({$and:[{"name":"Amruta"},{"branch":"civil"}]}).pretty()
+
+
+//7)OR in MongoDB 
+
+> db.mycol.find({$or:[{"name":"Amruta"},{"branch":"civil"}]}).pretty()

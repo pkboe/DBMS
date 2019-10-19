@@ -1,0 +1,115 @@
+/*
+ASSIGNMENT NO: A-2
+Problem Statement : Design and Develop SQL DDL statements which demonstrate the use of SQL objects such as Table, View, Index, Sequence, Synonym.      
+
+
+//CREATE A TABLE
+
+  create table Customer(Acc_no int primary key,Name varchar(20),City varchar(15),Balance int);
+Query OK, 0 rows affected (0.28 sec)
+
+  desc Customer;
+
+  insert into Customer values (1,'Ram','pune',10000);
+
+  insert into Customer values (2,'Ravi','Nashik',25000);
+
+
+  insert into Customer values (3,,,30000);
+
+
+
+  select * from Customer;
+
+
+
+
+
+  create table Loan(Loan_no int primary key,Name varchar(20),Loan_amt int); 
+
+
+  insert into Loan values(1,'Ravi',10000);
+
+
+  insert into Loan values(2,'Ram',50000);
+
+
+  insert into Loan values(3,'Dipak',40000);
+
+
+  select * from Loan
+
+  SELECT DISTINCT Name as customer_name FROM Customer WHERE Name NOT IN(SELECT Name as customer_name FROM Loan);
+
+
+  select distinct Name as customer_name from Customer where exists (select Name as customer_name from Loan where Customer.Name =Loan.Name); 
+
+
+  Select Acc_no,Balance,Name from Customer Union Select Loan_no,Name,Loan_amt From Loan;
+
+                             
+                                    CREATE VIEW
+
+  create view Customer_view 
+   -> as select * from Customer
+   -> where Balance >20000;
+
+
+  select * from Customer_view;
+
+
+  Create View View1 as select * from Customer where City = "Nashik" and Balance >20000;
+
+
+  select * from View1;
+
+
+
+
+  drop view Customer_view;
+
+
+
+
+//CREATE INDEX
+
+1) SINGLE COLUMN INDEX:
+  create index ind_name on Customer(name);
+
+
+3) COMPOSITE INDEX:
+  create index ind on Customer(Name,Acc_no);
+
+                                      SHOW INDEX
+
+  show index from Customer;
+
+                                                                         
+//SEQUENCE
+//Ascending order
+
+  select * from Customer order by Balance;
+
+
+
+//Descending order
+
+   select * from Loan order by Loan_amt desc;
+
+
+//  SYNONYM
+
+
+  select cust_id as id from customer;
++------+
+| id   |
++------+
+| 1001 |
+| 1002 |
+| 1003 |
+| 1004 |
++------+
+4 rows in set (0.00 sec)
+
+  select Loan_no,Name,Loan_amt,Loan_amt*0.04*20 as Interest from Loan;
+
